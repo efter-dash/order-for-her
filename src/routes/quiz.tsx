@@ -74,13 +74,16 @@ function QuizPage() {
           </div>
         </div>
 
-        <h2 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.9] uppercase mb-12 animate-in [animation-delay:100ms]">
+        <h2 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.9] uppercase mb-4 animate-in [animation-delay:100ms]">
           Map her{" "}
           <span className="text-primary italic font-serif lowercase tracking-normal font-semibold">
             palate
           </span>
           .
         </h2>
+        <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-foreground/50 mb-12 animate-in [animation-delay:150ms]">
+          ✦ 1 profile free · no account required
+        </p>
 
         <form onSubmit={submit} className="space-y-1 animate-in [animation-delay:200ms]">
           {/* Name */}
