@@ -242,6 +242,54 @@ function QuizPage() {
           </div>
         </form>
       </main>
+
+      {showUpgrade && (
+        <div
+          className="fixed inset-0 z-50 bg-foreground/80 backdrop-blur-sm flex items-center justify-center p-6 animate-in"
+          onClick={() => setShowUpgrade(false)}
+        >
+          <div
+            className="bg-background border-[6px] border-foreground max-w-md w-full p-8 md:p-10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-primary mb-4">
+              ✦ Free tier limit
+            </p>
+            <h3 className="text-4xl font-black uppercase tracking-tighter leading-[0.9] mb-4">
+              One free profile{" "}
+              <span className="text-primary italic font-serif lowercase tracking-normal font-semibold">
+                used.
+              </span>
+            </h3>
+            <p className="text-base text-foreground/70 mb-8 leading-snug">
+              You're on the house tier — one partner profile, no account needed. Want to save
+              profiles for friends, exes, or your situationship? Upgrade to unlock unlimited.
+            </p>
+            <div className="flex flex-col gap-3">
+              <button
+                type="button"
+                onClick={() => toast.info("Upgrade coming soon — we'll let you know 💌")}
+                className="w-full px-6 py-4 bg-foreground text-background font-black uppercase tracking-tighter text-base hover:bg-primary transition-colors active:scale-95 duration-200"
+              >
+                Upgrade for unlimited &rarr;
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowUpgrade(false);
+                  if (existing) {
+                    setProfile({ ...profile, name: existing.name });
+                    toast.info(`Editing ${existing.name}'s profile instead.`);
+                  }
+                }}
+                className="w-full px-6 py-3 border border-foreground/20 font-bold uppercase tracking-widest text-xs hover:border-foreground transition-colors"
+              >
+                {existing ? `Keep editing ${existing.name}` : "Close"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
