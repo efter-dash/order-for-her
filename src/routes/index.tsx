@@ -42,12 +42,17 @@ function Index() {
               Build her flavor profile once. Snap a photo of any menu. We tell you exactly what
               to order — and why she'll love it.
             </p>
-            <Link
-              to="/quiz"
-              className="px-8 py-5 bg-foreground text-background font-black uppercase tracking-tighter text-lg hover:bg-primary transition-colors active:scale-95 duration-200"
-            >
-              Build Her Profile &rarr;
-            </Link>
+            <div className="flex flex-col gap-3">
+              <Link
+                to="/quiz"
+                className="px-8 py-5 bg-foreground text-background font-black uppercase tracking-tighter text-lg hover:bg-primary transition-colors active:scale-95 duration-200"
+              >
+                Build Her Profile &rarr;
+              </Link>
+              <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-foreground/50">
+                ✦ 1 profile free · no account required
+              </span>
+            </div>
           </div>
         </section>
 

@@ -8,6 +8,7 @@ import {
   VIBES,
   saveProfile,
   loadProfile,
+  wouldExceedFreeLimit,
   type PartnerProfile,
   type SpiceLevel,
 } from "@/lib/profile";
@@ -38,6 +39,7 @@ function QuizPage() {
       createdAt: new Date().toISOString(),
     },
   );
+  const [showUpgrade, setShowUpgrade] = useState(false);
   const navigate = useNavigate();
 
   function toggle(arr: string[], v: string) {
@@ -48,6 +50,10 @@ function QuizPage() {
     e.preventDefault();
     if (!profile.name.trim()) {
       toast.error("Give her a name first 💌");
+      return;
+    }
+    if (wouldExceedFreeLimit(profile.name)) {
+      setShowUpgrade(true);
       return;
     }
     saveProfile({ ...profile, createdAt: profile.createdAt || new Date().toISOString() });
