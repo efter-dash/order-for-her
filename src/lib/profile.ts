@@ -13,6 +13,9 @@ export type PartnerProfile = {
 };
 
 const KEY = "ofh.partner.profile.v1";
+const LIST_KEY = "ofh.partner.profiles.v1";
+
+export const FREE_PROFILE_LIMIT = 1;
 
 export function loadProfile(): PartnerProfile | null {
   if (typeof window === "undefined") return null;
@@ -24,12 +27,42 @@ export function loadProfile(): PartnerProfile | null {
   }
 }
 
+export function loadProfiles(): PartnerProfile[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(LIST_KEY);
+    if (raw) return JSON.parse(raw) as PartnerProfile[];
+    // Back-compat: migrate single profile
+    const single = loadProfile();
+    return single ? [single] : [];
+  } catch {
+    return [];
+  }
+}
+
 export function saveProfile(p: PartnerProfile) {
   localStorage.setItem(KEY, JSON.stringify(p));
+  const list = loadProfiles();
+  const existingIdx = list.findIndex((x) => x.name.toLowerCase() === p.name.toLowerCase());
+  if (existingIdx >= 0) list[existingIdx] = p;
+  else list.push(p);
+  localStorage.setItem(LIST_KEY, JSON.stringify(list));
 }
 
 export function clearProfile() {
   localStorage.removeItem(KEY);
+  localStorage.removeItem(LIST_KEY);
+}
+
+/**
+ * True if saving this profile would exceed the free tier (1 profile).
+ * Editing the existing free profile (same name) is always allowed.
+ */
+export function wouldExceedFreeLimit(name: string): boolean {
+  const list = loadProfiles();
+  if (list.length < FREE_PROFILE_LIMIT) return false;
+  const isExisting = list.some((p) => p.name.trim().toLowerCase() === name.trim().toLowerCase());
+  return !isExisting;
 }
 
 export const CUISINES = [
