@@ -274,10 +274,10 @@ function QuizPage() {
             <div className="flex flex-col gap-3">
               <button
                 type="button"
-                onClick={() => toast.info("Upgrade coming soon — we'll let you know 💌")}
+                onClick={() => navigate({ to: "/auth" })}
                 className="w-full px-6 py-4 bg-foreground text-background font-black uppercase tracking-tighter text-base hover:bg-primary transition-colors active:scale-95 duration-200"
               >
-                Upgrade for unlimited &rarr;
+                Sign up for unlimited &rarr;
               </button>
               <button
                 type="button"
