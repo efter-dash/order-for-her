@@ -46,19 +46,25 @@ function QuizPage() {
     return arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
   }
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!profile.name.trim()) {
       toast.error("Give her a name first 💌");
       return;
     }
-    if (wouldExceedFreeLimit(profile.name)) {
+    const { isSignedIn } = await import("@/lib/profile");
+    const signedIn = await isSignedIn();
+    if (!signedIn && wouldExceedFreeLimit(profile.name)) {
       setShowUpgrade(true);
       return;
     }
-    saveProfile({ ...profile, createdAt: profile.createdAt || new Date().toISOString() });
-    toast.success("Profile saved. Let's scan a menu.");
-    navigate({ to: "/scan" });
+    try {
+      await saveProfile({ ...profile, createdAt: profile.createdAt || new Date().toISOString() });
+      toast.success("Profile saved. Let's scan a menu.");
+      navigate({ to: "/scan" });
+    } catch (err: any) {
+      toast.error(err.message ?? "Could not save profile");
+    }
   }
 
   return (
@@ -268,10 +274,10 @@ function QuizPage() {
             <div className="flex flex-col gap-3">
               <button
                 type="button"
-                onClick={() => toast.info("Upgrade coming soon — we'll let you know 💌")}
+                onClick={() => navigate({ to: "/auth" })}
                 className="w-full px-6 py-4 bg-foreground text-background font-black uppercase tracking-tighter text-base hover:bg-primary transition-colors active:scale-95 duration-200"
               >
-                Upgrade for unlimited &rarr;
+                Sign up for unlimited &rarr;
               </button>
               <button
                 type="button"
