@@ -74,16 +74,16 @@ function Index() {
 
 
 
-        <section className="animate-in [animation-delay:200ms] mb-24 grid grid-cols-1 md:grid-cols-3 gap-1">
+        <section className="animate-in [animation-delay:200ms] mb-16 md:mb-24 grid grid-cols-1 md:grid-cols-3 gap-1">
           {[
             { n: "01", title: "Take the quiz", body: "Tell us her vibe, dislikes, spice level, allergies." },
             { n: "02", title: "Scan the menu", body: "Upload a screenshot or photo of any restaurant menu." },
             { n: "03", title: "Order with love", body: "Get the perfect pick with a warm, specific reason." },
           ].map((s) => (
-            <div key={s.n} className="bg-muted p-8 flex flex-col gap-4 aspect-square justify-between">
-              <span className="font-mono text-5xl md:text-6xl font-black tracking-widest text-primary leading-none">({s.n})</span>
+            <div key={s.n} className="bg-muted p-6 md:p-8 flex flex-col gap-4 md:aspect-square justify-between min-h-[200px]">
+              <span className="font-mono text-4xl md:text-6xl font-black tracking-widest text-primary leading-none">({s.n})</span>
               <div>
-                <h3 className="text-3xl font-black uppercase tracking-tighter leading-none mb-3">
+                <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter leading-none mb-3">
                   {s.title}
                 </h3>
                 <p className="text-sm leading-snug text-foreground/70">{s.body}</p>
@@ -92,8 +92,8 @@ function Index() {
           ))}
         </section>
 
-        <section className="animate-in [animation-delay:400ms] bg-foreground text-background p-12 mb-24">
-          <p className="font-serif italic text-3xl md:text-4xl leading-tight text-balance">
+        <section className="animate-in [animation-delay:400ms] bg-foreground text-background p-8 md:p-12 mb-16 md:mb-24">
+          <p className="font-serif italic text-2xl md:text-4xl leading-tight text-balance">
             "She mentioned wanting something pillowy last Tuesday. This matches her love for
             earthy flavors without the heavy garlic she usually skips."
           </p>
