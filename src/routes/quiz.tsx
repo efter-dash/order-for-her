@@ -46,19 +46,25 @@ function QuizPage() {
     return arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
   }
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!profile.name.trim()) {
       toast.error("Give her a name first 💌");
       return;
     }
-    if (wouldExceedFreeLimit(profile.name)) {
+    const { isSignedIn } = await import("@/lib/profile");
+    const signedIn = await isSignedIn();
+    if (!signedIn && wouldExceedFreeLimit(profile.name)) {
       setShowUpgrade(true);
       return;
     }
-    saveProfile({ ...profile, createdAt: profile.createdAt || new Date().toISOString() });
-    toast.success("Profile saved. Let's scan a menu.");
-    navigate({ to: "/scan" });
+    try {
+      await saveProfile({ ...profile, createdAt: profile.createdAt || new Date().toISOString() });
+      toast.success("Profile saved. Let's scan a menu.");
+      navigate({ to: "/scan" });
+    } catch (err: any) {
+      toast.error(err.message ?? "Could not save profile");
+    }
   }
 
   return (
