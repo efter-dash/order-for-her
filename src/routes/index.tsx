@@ -63,7 +63,7 @@ function Index() {
             { n: "03", title: "Order with love", body: "Get the perfect pick with a warm, specific reason." },
           ].map((s) => (
             <div key={s.n} className="bg-muted p-8 flex flex-col gap-4 aspect-square justify-between">
-              <span className="font-mono text-xs uppercase tracking-widest text-primary">({s.n})</span>
+              <span className="font-mono text-5xl md:text-6xl font-black tracking-widest text-primary leading-none">({s.n})</span>
               <div>
                 <h3 className="text-3xl font-black uppercase tracking-tighter leading-none mb-3">
                   {s.title}
