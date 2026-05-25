@@ -163,9 +163,10 @@ function QuizPage() {
           {/* Dislikes */}
           <Section label="Hard dislikes">
             <p className="text-sm italic opacity-50 mb-3">"She says it tastes like soap..."</p>
-            <div className="flex flex-wrap gap-2">
-              {COMMON_DISLIKES.map((d) => {
+            <div className="flex flex-wrap gap-2 mb-4">
+              {[...COMMON_DISLIKES, ...profile.dislikes.filter((d) => !COMMON_DISLIKES.includes(d))].map((d) => {
                 const active = profile.dislikes.includes(d);
+                const isCustom = !COMMON_DISLIKES.includes(d);
                 return (
                   <button
                     key={d}
@@ -178,11 +179,39 @@ function QuizPage() {
                     }`}
                   >
                     {d}
+                    {isCustom && active ? " ✕" : ""}
                   </button>
                 );
               })}
             </div>
+            <div className="flex gap-2">
+              <input
+                value={customDislike}
+                onChange={(e) => setCustomDislike(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    addCustomDislike();
+                  }
+                }}
+                placeholder="Add your own (e.g. eggplant)"
+                className="flex-1 bg-muted px-4 py-2 outline-none focus:bg-foreground focus:text-background text-sm font-medium"
+              />
+              <button
+                type="button"
+                onClick={addCustomDislike}
+                className="px-4 py-2 bg-foreground text-background text-xs font-black uppercase tracking-widest hover:bg-primary transition-colors"
+              >
+                Add +
+              </button>
+            </div>
           </Section>
+
+          {/* Allergies */}
+          <Section label="Allergies">
+            <p className="text-sm italic opacity-50 mb-3">Separate multiple with commas — peanuts, shellfish, soy...</p>
+          </Section>
+
 
           {/* Allergies */}
           <Section label="Allergies (comma-separated)">
