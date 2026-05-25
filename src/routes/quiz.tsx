@@ -39,11 +39,23 @@ function QuizPage() {
       createdAt: new Date().toISOString(),
     },
   );
+  const [customDislike, setCustomDislike] = useState("");
   const [showUpgrade, setShowUpgrade] = useState(false);
   const navigate = useNavigate();
 
   function toggle(arr: string[], v: string) {
     return arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
+  }
+
+  function addCustomDislike() {
+    const v = customDislike.trim();
+    if (!v) return;
+    if (profile.dislikes.some((d) => d.toLowerCase() === v.toLowerCase())) {
+      setCustomDislike("");
+      return;
+    }
+    setProfile({ ...profile, dislikes: [...profile.dislikes, v] });
+    setCustomDislike("");
   }
 
   async function submit(e: React.FormEvent) {
