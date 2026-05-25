@@ -40,6 +40,9 @@ function QuizPage() {
     },
   );
   const [customDislike, setCustomDislike] = useState("");
+  const [allergiesInput, setAllergiesInput] = useState(
+    existing?.allergies?.join(", ") ?? "",
+  );
   const [showUpgrade, setShowUpgrade] = useState(false);
   const navigate = useNavigate();
 
