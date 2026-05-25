@@ -38,12 +38,15 @@ export const analyzeMenu = createServerFn({ method: "POST" })
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const { imageBase64, mimeType, profile } = data;
+    const { profile } = data;
+    const images = data.images?.length
+      ? data.images
+      : [{ imageBase64: data.imageBase64!, mimeType: data.mimeType ?? "image/jpeg" }];
 
     const spiceWord = ["mild", "mild-medium", "medium-hot", "fire-eater"][profile.spice - 1] ?? "medium";
 
-    const systemPrompt = `You are "Order for Her", a thoughtful AI dining concierge. Given a partner's taste profile and a photo of a restaurant menu, recommend exactly ONE dish from THAT menu that she'll love most. You must:
-- Only pick a dish that actually appears on the menu in the image.
+    const systemPrompt = `You are "Order for Her", a thoughtful AI dining concierge. Given a partner's taste profile and one or more photos of a restaurant menu (which may span multiple pages or sections), recommend exactly ONE dish that she'll love most. You must:
+- Only pick a dish that actually appears in the provided menu images.
 - Avoid anything containing her dislikes or allergies.
 - Match her cuisine preferences, spice tolerance (${spiceWord}), diet, and vibe.
 - Write the reason in a warm, intimate, second-person voice to the partner ordering (he/they), referencing why she'll love it.
@@ -60,7 +63,7 @@ Return ONLY valid JSON, no markdown, no prose outside JSON.`;
 - Spice tolerance: ${spiceWord} (${profile.spice}/4)
 - Extra notes: ${profile.notes || "none"}
 
-Analyze the attached menu image and return JSON in this exact shape:
+You are given ${images.length} menu image(s). Consider all of them together and return JSON in this exact shape:
 {
   "dish": "name of the dish exactly as written on the menu",
   "matchScore": 0-100 integer,
@@ -85,10 +88,10 @@ Analyze the attached menu image and return JSON in this exact shape:
             role: "user",
             content: [
               { type: "text", text: userText },
-              {
-                type: "image_url",
-                image_url: { url: `data:${mimeType};base64,${imageBase64}` },
-              },
+              ...images.map((img) => ({
+                type: "image_url" as const,
+                image_url: { url: `data:${img.mimeType};base64,${img.imageBase64}` },
+              })),
             ],
           },
         ],
