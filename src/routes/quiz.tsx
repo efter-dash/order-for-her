@@ -74,7 +74,8 @@ function QuizPage() {
       return;
     }
     try {
-      await saveProfile({ ...profile, createdAt: profile.createdAt || new Date().toISOString() });
+      const allergies = allergiesInput.split(",").map((s) => s.trim()).filter(Boolean);
+      await saveProfile({ ...profile, allergies, createdAt: profile.createdAt || new Date().toISOString() });
       toast.success("Profile saved. Let's scan a menu.");
       navigate({ to: "/scan" });
     } catch (err: any) {
