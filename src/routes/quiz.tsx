@@ -207,10 +207,8 @@ function QuizPage() {
             </div>
           </Section>
 
-          {/* Allergies */}
-          <Section label="Allergies">
-            <p className="text-sm italic opacity-50 mb-3">Separate multiple with commas — peanuts, shellfish, soy...</p>
-          </Section>
+
+
 
 
           {/* Allergies */}
