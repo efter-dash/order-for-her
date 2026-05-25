@@ -218,14 +218,15 @@ function QuizPage() {
           {/* Allergies */}
           <Section label="Allergies (comma-separated)">
             <input
-              value={profile.allergies.join(", ")}
-              onChange={(e) =>
+              value={allergiesInput}
+              onChange={(e) => setAllergiesInput(e.target.value)}
+              onBlur={() =>
                 setProfile({
                   ...profile,
-                  allergies: e.target.value.split(",").map((s) => s.trim()).filter(Boolean),
+                  allergies: allergiesInput.split(",").map((s) => s.trim()).filter(Boolean),
                 })
               }
-              placeholder="e.g. peanuts, shellfish"
+              placeholder="e.g. peanuts, shellfish, tree nuts"
               className="w-full bg-muted px-4 py-3 outline-none focus:bg-foreground focus:text-background text-base font-medium"
             />
           </Section>
