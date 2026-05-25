@@ -1,9 +1,16 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-const InputSchema = z.object({
+const ImageSchema = z.object({
   imageBase64: z.string().min(20),
   mimeType: z.string().default("image/jpeg"),
+});
+
+const InputSchema = z.object({
+  // Back-compat: allow single image fields or an images array
+  imageBase64: z.string().min(20).optional(),
+  mimeType: z.string().optional(),
+  images: z.array(ImageSchema).min(1).max(6).optional(),
   profile: z.object({
     name: z.string(),
     spice: z.number(),
@@ -14,6 +21,8 @@ const InputSchema = z.object({
     vibe: z.string(),
     notes: z.string(),
   }),
+}).refine((d) => d.images?.length || d.imageBase64, {
+  message: "Provide at least one menu image",
 });
 
 export type MenuPick = {
