@@ -40,6 +40,9 @@ function QuizPage() {
     },
   );
   const [customDislike, setCustomDislike] = useState("");
+  const [allergiesInput, setAllergiesInput] = useState(
+    existing?.allergies?.join(", ") ?? "",
+  );
   const [showUpgrade, setShowUpgrade] = useState(false);
   const navigate = useNavigate();
 
@@ -71,7 +74,8 @@ function QuizPage() {
       return;
     }
     try {
-      await saveProfile({ ...profile, createdAt: profile.createdAt || new Date().toISOString() });
+      const allergies = allergiesInput.split(",").map((s) => s.trim()).filter(Boolean);
+      await saveProfile({ ...profile, allergies, createdAt: profile.createdAt || new Date().toISOString() });
       toast.success("Profile saved. Let's scan a menu.");
       navigate({ to: "/scan" });
     } catch (err: any) {
@@ -214,14 +218,15 @@ function QuizPage() {
           {/* Allergies */}
           <Section label="Allergies (comma-separated)">
             <input
-              value={profile.allergies.join(", ")}
-              onChange={(e) =>
+              value={allergiesInput}
+              onChange={(e) => setAllergiesInput(e.target.value)}
+              onBlur={() =>
                 setProfile({
                   ...profile,
-                  allergies: e.target.value.split(",").map((s) => s.trim()).filter(Boolean),
+                  allergies: allergiesInput.split(",").map((s) => s.trim()).filter(Boolean),
                 })
               }
-              placeholder="e.g. peanuts, shellfish"
+              placeholder="e.g. peanuts, shellfish, tree nuts"
               className="w-full bg-muted px-4 py-3 outline-none focus:bg-foreground focus:text-background text-base font-medium"
             />
           </Section>
